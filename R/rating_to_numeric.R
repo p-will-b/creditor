@@ -15,6 +15,9 @@
 #' rating_to_numeric(x)
 #'
 
+
+# now the function
+
 rating_to_numeric <- function(credit_rating) {
 
   if (class(credit_rating) != "character") {
@@ -27,5 +30,6 @@ rating_to_numeric <- function(credit_rating) {
   x <- trimws(x)
 
 }
+
 
 

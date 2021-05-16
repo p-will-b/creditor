@@ -29,7 +29,12 @@ rating_to_numeric <- function(credit_rating) {
   x <- gsub("\\s+", "", x)
   x <- trimws(x)
 
+  creditor:::cr_imp$numeric_value[match(x, creditor:::cr_imp$char_value)]
+
 }
+
+
+
 
 
 

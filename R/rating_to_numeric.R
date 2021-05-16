@@ -31,8 +31,3 @@ rating_to_numeric <- function(credit_rating) {
 
 }
 
-
-
-
-
-

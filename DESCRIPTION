@@ -1,14 +1,19 @@
 Package: creditor
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Utility Functions For Bond Market Practitioners
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: p-will-b
+Maintainer: p-will-b
+Description: creditor is a collection of simple utility functions for bond market practitioners. 
+    The aim of (nearly all) the functions is to simplify some of the pesky calculations one 
+    encounters in the day-to-day of fixed income data processing, modeling, and computation.
+License: MIT + file LICENSE
+URL: https://github.com/p-will-b/credtior
+BugReports: https://github.com/p-will-b/creditor/issues
+Depends:
+    R (>= 3.1.2)
 Encoding: UTF-8
 LazyData: false
 RoxygenNote: 7.1.1
 Depends: 
-    R (>= 2.10)
+    R (>= 3.1.2)

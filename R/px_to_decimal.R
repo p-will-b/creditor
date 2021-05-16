@@ -6,6 +6,7 @@
 #'
 #' @param frac_px A vector of fractional bond prices, can include decimal prices too
 #' @return Returns a vector of decimalized bond prices
+#' @export
 #' @examples
 #'
 #' # convert fractional bond prices to decimal prices

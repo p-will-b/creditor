@@ -8,15 +8,13 @@
 #'
 #' @param credit_rating A character vector of bond credit ratings
 #' @return Returns a vector of numeric credit rating equivalents
+#' @export
 #' @examples
 #'
 #' # convert bond credit ratings to numeric values
 #' x <- c("AAA, "Baa2", "A(low)")
 #' rating_to_numeric(x)
 #'
-
-
-# now the function
 
 rating_to_numeric <- function(credit_rating) {
 

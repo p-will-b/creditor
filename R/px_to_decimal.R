@@ -21,24 +21,32 @@ px_to_decimal <- function(bond_px) {
   x <- gsub("\\$", "", x)
 
   # split into pieces
+
   split_px <- strsplit(x, "-")
   dp <- sapply(split_px, `[`, 1)
   frac <- sapply(split_px, `[`, 2)
 
+  # check first piece, if contains '+' add 1/64 to number
+
+  dp <- ifelse(grepl("\\+", dp), as.character(as.numeric(gsub("\\+", "", dp)) + 1/64), dp)
+
   # now clean...fractional, +, NNN-nnn, simple dig, frac+decimal
+
   frac <- ifelse(grepl("\\/", frac), gsub(" ", "/32 ", paste0(frac, "*1/32")), frac)
   frac <- ifelse(grepl("\\+$", frac), gsub("\\+$", "/32 1/64", frac), frac)
   frac <- ifelse(nchar(frac) == 3 & !grepl("[^0-9]", frac), paste0(substr(frac, 1, 2), "/32 ", substr(frac, 3, 3), "/8*1/32"), frac)
   frac <- ifelse(!grepl("[^0-9]", frac), paste0(frac, "/32"), frac)
   frac <- ifelse(grepl("\\d\\.\\d", frac), gsub("\\.", "/32 .", paste0(frac, "*1/32")), frac)
 
-  # return value, if NA try convert to numeric
-  nums_parsed <- as.numeric(dp) + as.numeric(sapply(sub(" ", "+", frac), function(x) eval(parse(text = x))))
+  # return value, first check for edge cases with only decimal & +, then if NA convert to numeric
+
+  nums_parsed <- ifelse(
+    grepl("NA", frac),
+    as.numeric(dp),
+    as.numeric(dp) + as.numeric(sapply(sub(" ", "+", frac), function(x) eval(parse(text = x))))
+  )
   nums_parsed[which(is.na(nums_parsed))] <- as.numeric(x[which(is.na(nums_parsed))])
   nums_parsed <- as.numeric(sprintf("%.5f", nums_parsed))
 
   return(nums_parsed)
 }
-
-
-

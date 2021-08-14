@@ -23,11 +23,9 @@ px_to_decimal <- function(bond_px) {
   frac <- sapply(split_px, `[`, 2)
 
   # check first piece, if contains '+' add 1/64 to number for edge cases
-
   dp <- ifelse(grepl("+", dp, fixed = TRUE), as.character(as.numeric(gsub("+", "", dp, fixed = TRUE)) + 1/64), dp)
 
   # now handle fractional, +, NNN-nnn, simple digit, frac+decimal
-
   frac <- ifelse(grepl("/", frac, fixed = TRUE), gsub(" ", "/32 ", paste0(frac, "*1/32"), fixed = TRUE), frac)
   frac <- ifelse(grepl("\\+$", frac), gsub("\\+$", "/32 1/64", frac), frac)
   frac <- ifelse(nchar(frac) == 3 & !grepl("[^0-9]", frac), paste0(substr(frac, 1, 2), "/32 ", substr(frac, 3, 3), "/8*1/32"), frac)
@@ -37,5 +35,6 @@ px_to_decimal <- function(bond_px) {
 
   # return value, first check for edge cases with only decimal & +, then if NA convert to numeric
   dp <- ifelse(grepl("NA", frac, fixed = TRUE), as.numeric(dp), as.numeric(dp) + as.numeric(lapply(pfrac, eval)))
+
   return(dp)
 }

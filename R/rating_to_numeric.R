@@ -18,16 +18,13 @@
 
 rating_to_numeric <- function(credit_rating) {
 
-  if (class(credit_rating) != "character") {
-    stop("rating_to_numeric() requires a character vector input")
-  }
+  stopifnot(is.character(credit_rating))
 
   # clean input data
-  x <- gsub("—", "-", credit_rating)
+  x <- gsub("—", "-", credit_rating, fixed = TRUE)
   x <- gsub("\\s+", "", x)
   x <- trimws(x)
 
   creditor:::cr_imp$numeric_value[match(x, creditor:::cr_imp$char_value)]
-
 }
 

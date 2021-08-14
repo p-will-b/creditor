@@ -2,8 +2,8 @@ Package: creditor
 Type: Package
 Title: Utility Functions For Bond Market Practitioners
 Version: 0.1.0
-Author: p-will-b
-Maintainer: p-will-b
+Author: pwillb
+Maintainer: pwillb
 Description: creditor is a collection of simple utility functions for bond market practitioners. 
     The aim of (nearly all) the functions is to simplify some of the pesky calculations one 
     encounters in the day-to-day of fixed income data processing, modeling, and computation.

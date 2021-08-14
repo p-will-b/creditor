@@ -31,7 +31,7 @@ rating_to_numeric <- function(credit_rating, na_as_nr = TRUE) {
 
   if(!na_as_nr) {
     rtg_out <- creditor:::cr_imp$numeric_value[match(x, creditor:::cr_imp$char_value)]
-    rtg_out[is.na(credit_rating)] <- NA_character_
+    rtg_out[is.na(credit_rating)] <- NA_real_
     return(rtg_out)
 
   } else {
@@ -40,3 +40,5 @@ rating_to_numeric <- function(credit_rating, na_as_nr = TRUE) {
   }
 
 }
+
+

@@ -2,9 +2,9 @@
 #'
 #' @description This function is designed to handle all flavors of
 #' fixed income fractional price quotes and to return decimal equivalents
-#' for use in your scripts.
+#' for use in your scripts. Requires a character vector input.
 #'
-#' @param frac_px A vector of fractional bond prices, can include decimal prices too
+#' @param bond_px A character vector of fractional bond prices, can include decimal prices too
 #' @return Returns a vector of decimalized bond prices
 #' @export
 #' @examples
@@ -16,37 +16,26 @@
 
 px_to_decimal <- function(bond_px) {
 
-  # ensure input vector is character
-  x <- as.character(bond_px)
-  x <- gsub("\\$", "", x)
-
-  # split into pieces
-
-  split_px <- strsplit(x, "-")
+  stopifnot(is.character(bond_px))
+  x <- gsub("$", "", bond_px, fixed = TRUE)
+  split_px <- strsplit(x, "-", fixed = TRUE)
   dp <- sapply(split_px, `[`, 1)
   frac <- sapply(split_px, `[`, 2)
 
-  # check first piece, if contains '+' add 1/64 to number
+  # check first piece, if contains '+' add 1/64 to number for edge cases
 
-  dp <- ifelse(grepl("\\+", dp), as.character(as.numeric(gsub("\\+", "", dp)) + 1/64), dp)
+  dp <- ifelse(grepl("+", dp, fixed = TRUE), as.character(as.numeric(gsub("+", "", dp, fixed = TRUE)) + 1/64), dp)
 
-  # now clean...fractional, +, NNN-nnn, simple dig, frac+decimal
+  # now handle fractional, +, NNN-nnn, simple digit, frac+decimal
 
-  frac <- ifelse(grepl("\\/", frac), gsub(" ", "/32 ", paste0(frac, "*1/32")), frac)
+  frac <- ifelse(grepl("/", frac, fixed = TRUE), gsub(" ", "/32 ", paste0(frac, "*1/32"), fixed = TRUE), frac)
   frac <- ifelse(grepl("\\+$", frac), gsub("\\+$", "/32 1/64", frac), frac)
   frac <- ifelse(nchar(frac) == 3 & !grepl("[^0-9]", frac), paste0(substr(frac, 1, 2), "/32 ", substr(frac, 3, 3), "/8*1/32"), frac)
   frac <- ifelse(!grepl("[^0-9]", frac), paste0(frac, "/32"), frac)
-  frac <- ifelse(grepl("\\d\\.\\d", frac), gsub("\\.", "/32 .", paste0(frac, "*1/32")), frac)
+  frac <- sub(" ", "+", ifelse(grepl("\\d\\.\\d", frac), gsub(".", "/32 .", paste0(frac, "*1/32"), fixed = TRUE), frac), fixed = TRUE)
+  pfrac <- parse(text = frac, keep.source = FALSE)
 
   # return value, first check for edge cases with only decimal & +, then if NA convert to numeric
-
-  nums_parsed <- ifelse(
-    grepl("NA", frac),
-    as.numeric(dp),
-    as.numeric(dp) + as.numeric(sapply(sub(" ", "+", frac), function(x) eval(parse(text = x))))
-  )
-  nums_parsed[which(is.na(nums_parsed))] <- as.numeric(x[which(is.na(nums_parsed))])
-  nums_parsed <- as.numeric(sprintf("%.5f", nums_parsed))
-
-  return(nums_parsed)
+  dp <- ifelse(grepl("NA", frac, fixed = TRUE), as.numeric(dp), as.numeric(dp) + as.numeric(lapply(pfrac, eval)))
+  return(dp)
 }

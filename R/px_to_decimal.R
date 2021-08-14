@@ -4,8 +4,8 @@
 #' fixed income fractional price quotes and to return decimal equivalents
 #' for use in your scripts. Requires a character vector input.
 #'
-#' @param bond_px A character vector of fractional bond prices, can include decimal prices too
 #' @return Returns a vector of decimalized bond prices
+#' @param bond_px A character vector of fractional bond prices, can include decimal prices too
 #' @export
 #' @examples
 #'

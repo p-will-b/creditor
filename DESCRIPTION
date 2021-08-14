@@ -14,5 +14,3 @@ Depends:
 Encoding: UTF-8
 LazyData: false
 RoxygenNote: 7.1.1
-Depends: 
-    R (>= 3.1.2)

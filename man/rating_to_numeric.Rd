@@ -4,18 +4,23 @@
 \alias{rating_to_numeric}
 \title{Converts a vector of bond credit ratings to numeric values}
 \usage{
-rating_to_numeric(credit_rating)
+rating_to_numeric(credit_rating, na_as_nr = TRUE)
 }
 \arguments{
 \item{credit_rating}{A character vector of bond credit ratings}
+
+\item{na_as_nr}{Assign missing or unrecognized ratings highest numeric value,
+defaults to TRUE}
 }
 \value{
-Returns a vector of numeric credit rating equivalents
+Returns a vector of numeric credit rating equivalents.
 }
 \description{
 This function takes a vector of bond credit ratings and
 returns a vector of their numeric equivalents. The package currently
 supports long-term credit ratings from Moody's, S&P, Fitch, Kroll, &
 DBRS/Morningstar. For computing portfolio or universe summary stats,
-please see creditor::avg_rtg and creditor::median_rtg.
+please see creditor::avg_rtg and creditor::median_rtg. All mappings
+are stored in creditor:::cr_imp. By default, NA and unrecognized ratings
+are assumed unrated and are assigned the highest numeric value (23).
 }

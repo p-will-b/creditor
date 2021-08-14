@@ -7,7 +7,7 @@
 px_to_decimal(bond_px)
 }
 \arguments{
-\item{frac_px}{A vector of fractional bond prices, can include decimal prices too}
+\item{bond_px}{A character vector of fractional bond prices, can include decimal prices too}
 }
 \value{
 Returns a vector of decimalized bond prices
@@ -15,7 +15,7 @@ Returns a vector of decimalized bond prices
 \description{
 This function is designed to handle all flavors of
 fixed income fractional price quotes and to return decimal equivalents
-for use in your scripts.
+for use in your scripts. Requires a character vector input.
 }
 \examples{
 

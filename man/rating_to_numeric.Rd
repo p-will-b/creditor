@@ -37,13 +37,3 @@ DBRS/Morningstar. All mappings are stored in creditor:::cr_imp.
 By default, NA and unrecognized ratings are assumed
 unrated and are assigned the highest numeric value (23).
 }
-\examples{
-
-# convert bond credit ratings to numeric values
-x <- c("AAA, "Baa2", "A(low)")
-rating_to_numeric(x)
-
-# summarize ratings
-x <- c("AAA, "Baa2", "A(low)")
-rating_to_numeric(x, summary_fun = mean, na.rm = TRUE)
-}

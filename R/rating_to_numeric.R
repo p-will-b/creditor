@@ -6,8 +6,9 @@
 #' long term credit ratings from Moody's, S&P, Fitch, Kroll, &
 #' DBRS/Morningstar. All mappings are stored in creditor:::cr_imp. Short term
 #' ratings are assigned the floor rounded value of their long term equivalents.
-#' By default, NA and unrecognized ratings are assumed
-#' unrated and are assigned the highest numeric value (23).
+#' By default, NA and unrecognized ratings are not assigned a value. This setting
+#' can be changed to assign the highest numeric value (23) to missing or unrated
+#' bonds.
 #'
 #' @return Returns a vector of numeric credit rating equivalents.
 #' @param credit_rating A character vector of bond credit ratings
@@ -29,7 +30,7 @@
 #' rating_to_numeric(x, summary_fun = weighted.mean, w = c(0.15, 0.60, 0.25))
 
 rating_to_numeric <- function(credit_rating,
-                              na_as_nr = TRUE,
+                              nr_as_na = TRUE,
                               summary_fun = NULL,
                               ...,
                               summarize_numeric = FALSE) {
@@ -44,9 +45,9 @@ rating_to_numeric <- function(credit_rating,
   x <- gsub("L$", "(LOW)", x)
   x <- trimws(x)
 
-  if(!na_as_nr) {
+  if(nr_as_na) {
     rtg_out <- creditor:::cr_imp$numeric_value[match(x, creditor:::cr_imp$char_value)]
-    rtg_out[is.na(credit_rating)] <- NA_real_
+    rtg_out[is.na(credit_rating) | rtg_out == 23] <- NA_real_
 
   } else {
 

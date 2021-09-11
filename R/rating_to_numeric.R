@@ -3,7 +3,7 @@
 #' @description This function takes a vector of bond credit ratings and
 #' returns a vector of their numeric equivalents or, optionally, a statistical
 #' summary of the translated values. The package currently supports
-#' long-term credit ratings from Moody's, S&P, Fitch, Kroll, &
+#' long term credit ratings from Moody's, S&P, Fitch, Kroll, &
 #' DBRS/Morningstar. All mappings are stored in creditor:::cr_imp. Short term
 #' ratings are assigned the floor rounded value of their long term equivalents.
 #' By default, NA and unrecognized ratings are assumed

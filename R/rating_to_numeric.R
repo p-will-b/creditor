@@ -4,7 +4,8 @@
 #' returns a vector of their numeric equivalents or, optionally, a statistical
 #' summary of the translated values. The package currently supports
 #' long-term credit ratings from Moody's, S&P, Fitch, Kroll, &
-#' DBRS/Morningstar. All mappings are stored in creditor:::cr_imp.
+#' DBRS/Morningstar. All mappings are stored in creditor:::cr_imp. Short term
+#' ratings are assigned the floor rounded value of their long term equivalents.
 #' By default, NA and unrecognized ratings are assumed
 #' unrated and are assigned the highest numeric value (23).
 #'
@@ -37,7 +38,10 @@ rating_to_numeric <- function(credit_rating,
 
   # clean input data
   x <- gsub("—", "-", toupper(credit_rating), fixed = TRUE)
+  x <- gsub("\\((P|SF|EXP)\\)|(P|E|U)$|\\*(\\+|\\-)", "", x)
   x <- gsub("\\s+", "", x)
+  x <- gsub("H$", "(HIGH)", x)
+  x <- gsub("L$", "(LOW)", x)
   x <- trimws(x)
 
   if(!na_as_nr) {
@@ -69,4 +73,3 @@ rating_to_numeric <- function(credit_rating,
   }
 
 }
-

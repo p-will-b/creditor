@@ -2,3 +2,4 @@
 
 export(bond_to_decimal)
 export(rating_to_numeric)
+export(validate_cusip)

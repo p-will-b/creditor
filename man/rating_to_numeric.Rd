@@ -6,7 +6,7 @@
 \usage{
 rating_to_numeric(
   credit_rating,
-  na_as_nr = TRUE,
+  nr_as_na = TRUE,
   summary_fun = NULL,
   ...,
   summarize_numeric = FALSE
@@ -15,15 +15,15 @@ rating_to_numeric(
 \arguments{
 \item{credit_rating}{A character vector of bond credit ratings}
 
-\item{na_as_nr}{Assign missing or unrecognized ratings highest numeric value,
-defaults to TRUE}
-
 \item{summary_fun}{Function input to summarize vector}
 
 \item{...}{Additional arguments passed to summary_fun}
 
 \item{summarize_numeric}{Return a numeric summary value.
 Defaults to FALSE to return letter rating equivalent.}
+
+\item{na_as_nr}{Assign missing or unrecognized ratings highest numeric value,
+defaults to TRUE}
 }
 \value{
 Returns a vector of numeric credit rating equivalents.
@@ -32,8 +32,10 @@ Returns a vector of numeric credit rating equivalents.
 This function takes a vector of bond credit ratings and
 returns a vector of their numeric equivalents or, optionally, a statistical
 summary of the translated values. The package currently supports
-long-term credit ratings from Moody's, S&P, Fitch, Kroll, &
-DBRS/Morningstar. All mappings are stored in creditor:::cr_imp.
-By default, NA and unrecognized ratings are assumed
-unrated and are assigned the highest numeric value (23).
+long term credit ratings from Moody's, S&P, Fitch, Kroll, &
+DBRS/Morningstar. All mappings are stored in creditor:::cr_imp. Short term
+ratings are assigned the floor rounded value of their long term equivalents.
+By default, NA and unrecognized ratings are not assigned a value. This setting
+can be changed to assign the highest numeric value (23) to missing or unrated
+bonds.
 }

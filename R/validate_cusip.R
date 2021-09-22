@@ -19,22 +19,17 @@
 
 validate_cusip <- function(cusips){
   stopifnot(is.character(cusips))
-  idx <- is.na(cusips) | nchar(cusips) != 9L | !grepl("[0-9]", substr(cusips, 9, 9))
-  c0 <- .Internal(substr(as.character(cusips[!idx]), 1L, 8L))
-  c1 <- toupper(unlist(strsplit(c0, split = "", fixed = T), use.names = F))
-  c1[c1 == "*"] <- 36
-  c1[c1 == "@"] <- 37
-  c1[c1 == "#"] <- 38
-  idx1 <- c1 %in% LETTERS
+  idx <- is.na(cusips) | nchar(cusips) != 9L | !.Internal(match(.Internal(substr(x = cusips, start = 9L, stop = 9L)), 0L:9L, nomatch = 0L, incomparables = NULL)) > 0L
+  c1 <- .Internal(toupper(.Internal(unlist(strsplit(.Internal(substr(x = cusips[!idx], start = 1L, stop =  8L)), split = "", fixed = T), use.names = F, recursive = F))))
+  c1[c1 == "*"] <- 36L; c1[c1 == "@"] <- 37L ; c1[c1 == "#"] <- 38L
+  idx1 <- .Internal(match(c1, LETTERS, nomatch = 0L, incomparables = NULL)) > 0L
   c1[idx1] <- match(c1[idx1], LETTERS) + 9L
-  idx2 <- seq_along(c1) %% 2L == 0L
-  c1[idx2] <- as.numeric(c1[idx2]) * 2L
-  c2 <- nchar(c1)
-  names(c2) <- cumsum(seq_along(c2) %% 8L == 1L)
-  c3 <- as.numeric(unlist(strsplit(c1, "", fixed = T), use.names = F))
-  names(c3) <- rep(names(c2), c2)
-  L <- .Internal(split(c3, factor(names(c3), levels = unique(names(c3)))))
-  cusips[!idx] <- as.numeric(substr(cusips[!idx], 9, 9)) == vapply(L, \(x) (10 - (sum(x) %% 10)) %% 10, numeric(1), USE.NAMES = FALSE)
-  cusips[idx] <- F
-  as.logical(cusips)
+  c1 <- as.character(as.integer(c1) * 1L:2L)
+  L <- .Internal(split(as.integer(.Internal(unlist(strsplit(c1, split = "", fixed = T), use.names = F, recursive = F))), as.factor(rep(cumsum(seq_along(c1) %% 8L == 1L), nchar(c1)))))
+  oL <- integer(length = length(L))
+  for(i in seq_along(L)) oL[i] <- (10 - (sum(L[[i]]) %% 10L)) %% 10L
+  lO <- logical(length = length(cusips))
+  lO[!idx] <- as.integer(.Internal(x = substr(cusips[!idx], start = 9L, stop = 9L))) == oL
+  lO[idx] <- F
+  lO
 }

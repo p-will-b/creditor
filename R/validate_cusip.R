@@ -27,7 +27,7 @@ validate_cusip <- function(cusips){
   c1 <- as.character(as.integer(c1) * 1L:2L)
   L <- .Internal(split(as.integer(.Internal(unlist(strsplit(c1, split = "", fixed = T), use.names = F, recursive = F))), as.factor(rep(cumsum(seq_along(c1) %% 8L == 1L), nchar(c1)))))
   oL <- integer(length = length(L))
-  for(i in seq_along(L)) oL[i] <- (10 - (sum(L[[i]]) %% 10L)) %% 10L
+  for(i in seq_along(L)) oL[i] <- (10L - (sum(L[[i]]) %% 10L)) %% 10L
   lO <- logical(length = length(cusips))
   lO[!idx] <- as.integer(.Internal(x = substr(cusips[!idx], start = 9L, stop = 9L))) == oL
   lO[idx] <- F

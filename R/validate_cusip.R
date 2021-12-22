@@ -18,9 +18,9 @@
 #'
 
 validate_cusip <- function(cusips){
-  stopifnot(is.character(cusips))
-  idx <- is.na(cusips) | nchar(cusips) != 9L | !.Internal(match(.Internal(substr(x = cusips, start = 9L, stop = 9L)), 0L:9L, nomatch = 0L, incomparables = NULL)) > 0L
-  c1 <- .Internal(toupper(.Internal(unlist(strsplit(.Internal(substr(x = cusips[!idx], start = 1L, stop =  8L)), split = "", fixed = T), use.names = F, recursive = F))))
+  id <- gsub("[^A-z0-9*@#]", "", cusip, perl = T)
+  idx <- is.na(id) | nchar(id) != 9L | !.Internal(match(.Internal(substr(x = id, start = 9L, stop = 9L)), 0L:9L, nomatch = 0L, incomparables = NULL)) > 0L
+  c1 <- .Internal(toupper(.Internal(unlist(strsplit(.Internal(substr(x = id[!idx], start = 1L, stop =  8L)), split = "", fixed = T), use.names = F, recursive = F))))
   c1[c1 == "*"] <- 36L; c1[c1 == "@"] <- 37L ; c1[c1 == "#"] <- 38L
   idx1 <- .Internal(match(c1, LETTERS, nomatch = 0L, incomparables = NULL)) > 0L
   c1[idx1] <- match(c1[idx1], LETTERS) + 9L

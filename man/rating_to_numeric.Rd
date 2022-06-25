@@ -39,3 +39,13 @@ By default, NA and unrecognized ratings are not assigned a value. This setting
 can be changed to assign the highest numeric value (23) to missing or unrated
 bonds.
 }
+\examples{
+
+# convert bond credit ratings to numeric values
+x <- c("AAA", "Baa2", "A(low)")
+rating_to_numeric(x)
+
+# summarize ratings
+x <- c("AAA", "Baa2", "A(low)")
+rating_to_numeric(x, summary_fun = weighted.mean, w = c(0.15, 0.60, 0.25))
+}

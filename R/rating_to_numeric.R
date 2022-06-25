@@ -22,7 +22,7 @@
 #' @examples
 #'
 #' # convert bond credit ratings to numeric values
-#' x <- c("AAA, "Baa2", "A(low)")
+#' x <- c("AAA", "Baa2", "A(low)")
 #' rating_to_numeric(x)
 #'
 #' # summarize ratings
@@ -35,7 +35,7 @@ rating_to_numeric <- function(credit_rating,
                               ...,
                               summarize_numeric = FALSE) {
 
-  stopifnot(is.character(credit_rating))
+  stopifnot("credit_rating must be a character vector" = is.character(credit_rating))
 
   # clean input data
   x <- gsub("—", "-", toupper(credit_rating), fixed = TRUE)
@@ -48,29 +48,18 @@ rating_to_numeric <- function(credit_rating,
   if(nr_as_na) {
     rtg_out <- creditor:::cr_imp$numeric_value[match(x, creditor:::cr_imp$char_value)]
     rtg_out[is.na(credit_rating) | rtg_out == 23] <- NA_real_
-
   } else {
-
     rtg_out <- creditor:::cr_imp$numeric_value[match(x, creditor:::cr_imp$char_value)]
   }
 
   if(is.null(summary_fun)) {
-
     return(rtg_out)
-
   } else {
-
     .f <- match.fun(summary_fun)
-
     if(summarize_numeric) {
-
       return(.f(rtg_out, ...))
-
     } else {
-
       creditor:::cr_imp$char_value[match(round(.f(rtg_out, ...), 0), creditor:::cr_imp$numeric_value)]
-
     }
   }
-
 }

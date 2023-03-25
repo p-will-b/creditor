@@ -12,8 +12,8 @@
 #'
 #' @return Returns a vector of numeric credit rating equivalents.
 #' @param credit_rating A character vector of bond credit ratings
-#' @param na_as_nr Assign missing or unrecognized ratings highest numeric value,
-#' defaults to TRUE
+#' @param nr_as_na If FALSE, assign missing or unrecognized ratings
+#' highest numeric value, defaults to TRUE
 #' @param summary_fun Function input to summarize vector
 #' @param ... Additional arguments passed to summary_fun
 #' @param summarize_numeric Return a numeric summary value.
@@ -39,13 +39,13 @@ rating_to_numeric <- function(credit_rating,
 
   # clean input data
   x <- gsub("—", "-", toupper(credit_rating), fixed = TRUE)
-  x <- gsub("\\((P|SF|EXP)\\)|(P|E|U)$|\\*(\\+|\\-)", "", x)
-  x <- gsub("\\s+", "", x)
-  x <- gsub("H$", "(HIGH)", x)
-  x <- gsub("L$", "(LOW)", x)
-  x <- trimws(x)
+  x <- gsub("\\((P|SF|EXP)\\)|(P|E|U)$|\\*(\\+|\\-)", "", x, perl = TRUE)
+  x <- gsub("\\s+", "", x, perl = TRUE)
+  x <- gsub("H$", "(HIGH)", x, perl = TRUE)
+  x <- gsub("L$", "(LOW)", x, perl = TRUE)
+  x <- sub("[ \t\r\n]+$", "", sub("^[ \t\r\n]+", "", x, perl = TRUE))
 
-  if(nr_as_na) {
+if(nr_as_na) {
     rtg_out <- creditor:::cr_imp$numeric_value[match(x, creditor:::cr_imp$char_value)]
     rtg_out[is.na(credit_rating) | rtg_out == 23] <- NA_real_
   } else {

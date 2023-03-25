@@ -25,12 +25,11 @@ rating_to_char <- function(numeric_rating,
   stopifnot("numeric_rating must be numeric" = is.numeric(numeric_rating))
   stopifnot("agency_convention must be one of sfk or m" = agency_convention %in% c("sfk", "m"))
 
-  if(agency_convention == "sfk") {
-    rtg_dict <- creditor:::cr_imp[creditor:::cr_imp$agencies %in% "sfk", ]
-  } else {
-    rtg_dict <- creditor:::cr_imp[creditor:::cr_imp$agencies %in% "m", ]
-  }
+  rtg_dict <- switch(
+    agency_convention,
+    sfk = creditor:::cr_imp[cr_imp$agencies %in% "sfk", ],
+    m = creditor:::cr_imp[cr_imp$agencies %in% "m", ]
+  )
 
   rtg_dict$char_value[match(numeric_rating, rtg_dict$numeric_value)]
-
 }
